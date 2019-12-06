@@ -25,7 +25,11 @@ box without installation steps.
 
 * [OSX installer](https://download.docker.com/mac/stable/Docker.dmg)
 
-* [Windows installer](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
+* [Windows 10 installer](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe) [--> locally cached copy <-- ](file://./file-cache/DockerforWindowsInstaller.exe)
+   * [Instructions](https://docs.docker.com/v17.09/docker-for-windows/install/#download-docker-for-windows)
+
+* [Windows 7 (64bit) installer](https://github.com/docker/toolbox/releases/tag/latest)  [--> locally cached copy <-- ](file://./file-cache//DockerToolbox-latest.exe)
+  * [Instructions](https://docs.docker.com/toolbox/toolbox_install_windows/)
 
 * [Ubuntu install instructions](https://docs.docker.com/v17.09/engine/installation/linux/docker-ce/ubuntu/#docker-ee-customers)
 
