@@ -1,14 +1,19 @@
 # Installation
 
-We are going to ask you to install two powerful, versatile computing tools on your laptop.
+We are going to ask you to install docker, a powerful, versatile computing tool on your laptop.
 
-Both of these are meta-tools that manage other programs.
+Then we will use docker to run cwltool and awe-submit, both of which are meta-tools that manage other programs.
+
+Common Workflow Language is the protocol for telling cwltool and awe-submit how to run programs.  
+
+We will use cwltool to run a toy workflow locally and awe-submit to send a bioinformatics workflow to a compute 
+server.
 
 ## Docker
 
-Install  Docker CE for your desktop from https://docs.docker.com/v17.09/engine/installation/#server
+Install  *Docker CE* for your desktop from https://docs.docker.com/v17.09/engine/installation/#server
 
-You will need to choose your operating system to get the right installer.  The installers are about 500Mb.
+You will need to choose your operating system to get the right installer.  The installers are about 600Mb.
 
 What does docker do?  Docker allows running commands in pre-configured *containers* that include 
 programs, operating systems, and sometimes training data bundled together.  Docker manages starting
@@ -39,7 +44,11 @@ can be run on a remote server.  Most of the parts of the tool specification will
 and we can start using tools without repeating the installation, configuration, and operating
 system drudgery every time.
 
-* [Install cwltool - osx and linux](https://github.com/common-workflow-language/cwltool)
-* [Install instructions CWL - Windows](https://github.com/common-workflow-language/cwltool/blob/master/windowsdoc.md)
+We are *not* going to install the cwl engine on your laptop -- because we can run it from a docker container.
+
+    # every time I try to run "cwltool", start the docker container commonworkflowlanguage/cwltool and run cwltool inside it
+    alias cwltool='docker run -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp -v "$PWD":"$PWD" -w="$PWD" commonworkflowlanguage/cwltool'
+
+
 
 

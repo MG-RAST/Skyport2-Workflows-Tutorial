@@ -9,7 +9,7 @@
  - Test Docker 
  - install cwltool
 
-## [Show and Tell: Create wordcloud image with CWL](02-DockerandCWL.md2)
+## [Show and Tell: Create wordcloud image with CWL](02-DockerandCWL.md)
 
 - CWL Concepts
     - Tool
