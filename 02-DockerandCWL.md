@@ -8,12 +8,12 @@ laptop.
 If we run 
 
 ```bash
-    cwltool pdftotext.cwl
+cwltool pdftotext.cwl
 
-    INFO /usr/local/bin/cwltool 1.0.20191123091325
-    INFO Resolved 'pdftotext.cwl' to 'file:///Users/ubuntu/Skyport2/CWL/wordcloud-tutorial/pdftotext.cwl'
-    usage: pdftotext.cwl [-h] --pdf PDF --text TEXT [job_order]
-    pdftotext.cwl: error: the following arguments are required: --pdf, --text
+INFO /usr/local/bin/cwltool 1.0.20191123091325
+INFO Resolved 'pdftotext.cwl' to 'file:///Users/ubuntu/Skyport2/CWL/wordcloud-tutorial/pdftotext.cwl'
+usage: pdftotext.cwl [-h] --pdf PDF --text TEXT [job_order]
+pdftotext.cwl: error: the following arguments are required: --pdf, --text
 ```
 
 This downloads a docker (named commonworkflowlanguage/cwltool:latest) and runs cwltool.
@@ -23,7 +23,7 @@ Cwltool declines to start the mgrast/pdf2wordcloud:demo since it found we did no
 Let us run pdftotext tool again, giving it arguments for the input file (demo.pdf) and the output (demo.txt):
 
 ```shell
-    cwltool pdftotext.cwl --pdf demo.pdf --text demo.txt
+cwltool pdftotext.cwl --pdf demo.pdf --text demo.txt
 ```
 
 This time it produces loads of output:
@@ -75,7 +75,7 @@ So far so good, we can run tools on our local machines, and we only had to insta
 We have prepared a tool description that runs both of these steps, going from pdf to wordcloud in one invokation:
 
 ```shell
-    cwltool pdf2wordcloud.cwl --pdf demo.pdf
+cwltool pdf2wordcloud.cwl --pdf demo.pdf
 ```
 This produces extracted.txt.png from the specified pdf.
 
