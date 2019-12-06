@@ -1,6 +1,6 @@
 # Overview
 
-## Introduction
+## Intro
  - slides
 
 ## [Install: docker and cwl](01-Install.md)
@@ -12,9 +12,9 @@
 ## [Show and Tell: Create wordcloud image with CWL](02-DockerandCWL.md)
 
 - CWL Concepts
-    - Tool
-    - Workflow
-    - Job
+  - Tool
+  - Workflow
+  - Job
 - Wordcloud workflow
 
 ## [Execute Workflow remotely -- CWL to run jobs on AWE](03-AWEandCWL.md)
@@ -25,6 +25,6 @@
 - Create Job describtion
 - Submit Job
 
-## Outlook
+## Outro
 
 - slides
