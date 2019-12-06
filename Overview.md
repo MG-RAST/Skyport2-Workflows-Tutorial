@@ -1,6 +1,6 @@
 # Overview
 
-## Introduction
+## Intro
  - slides
 
 ## [Install: docker and cwl](01-Install.md)
@@ -25,6 +25,6 @@
 - Create Job describtion
 - Submit Job
 
-## Outlook
+## Outro
 
 - slides
