@@ -40,36 +40,38 @@ services:
     shock-browser:
       extra_hosts:
         - "skyport.local:${SKYPORT_DOCKER_GATEWAY}"
-      image: mgrast/shock-browser:demo
+      image: mgrast/shock-browser:${TAG}
       depends_on:
         - shock
-        - auth
+        - auth-server
       volumes:
         - ${CONFIGDIR}/ShockBrowser/config.js:/usr/share/nginx/html/js/config.js
 
     # local Oauth2 server for user, password and tokens
     # to make Auth data persistent make the MySQL DB persistent
-    auth:
+    auth-server:
         image: mgrast/authserver:demo
         extra_hosts:
           - "skyport.local:${SKYPORT_DOCKER_GATEWAY}"
         environment:
-            MYSQL_HOST: db
+            MYSQL_HOST: auth-mysql
             MYSQL_DATABASE: DemoAppUsers
             MYSQL_USER: authService
             MYSQL_PASSWORD: authServicePassword
         depends_on:
-          - db
+          - auth-mysql
         volumes:
-          - ${CONFIGDIR}/authServer/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
-          - ${CONFIGDIR}/authServer/cgi/:/usr/local/apache2/htdocs/cgi-bin/
+          #- ${CONFIGDIR}/authServer/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+          - ${CONFIGDIR}/authServer/perl/:/usr/local/lib/site_perl:ro
+          - ${CONFIGDIR}/authServer/cgi/:/usr/local/apache2/cgi-bin/:ro
+          #- ${CONFIGDIR}/authServer/dbsetup.demo.mysql:/tmp/dbsetup.demo.mysql:ro
         ports:
           - 8081:80
 
     # AWE resource manager
     # uncomment AWEDIR to make data and logs persistent (also requires AWE-mongo for full persistence)
     awe-server:
-        image: mgrast/awe:cwl
+        image: mgrast/awe-server:cwl
         extra_hosts:
           - "skyport.local:${SKYPORT_DOCKER_GATEWAY}"
         entrypoint:
@@ -77,12 +79,13 @@ services:
           - --conf=/awe-config/awe-server.cfg
         depends_on:
           - awe-mongo
-          - auth
+          - auth-server
         ports:
           - 8001
           - 8081
         volumes:
           - ${CONFIGDIR}/AWE/awe-server.conf:/awe-config/awe-server.cfg:ro
+          - ${CONFIGDIR}/authServer/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
           #- ${AWEDIR}:/mnt/data/awe/
 
 
@@ -120,28 +123,24 @@ services:
           # mount the docker socker to allow container to execute docker commands (for CWL runner)
           - /var/run/docker.sock:/var/run/docker.sock
 
-  #  awe-monitor-apache:
-  #    image: mgrast/awe-monitor:apache
-  #    extra_hosts:
-  #      - "skyport.local:${SKYPORT_DOCKER_GATEWAY}"
-  #    depends_on:
-  #      - awe-server
-  #    volumes:
-  #      - ${CONFIGDIR}/awe-monitor/config.js:/usr/usr/local/apache2/htdocs/js/config.js:ro
-  #      - ${CONFIGDIR}/awe-monitor/AuthConfig.pm:/usr/local/apache2/cgi-bin/AuthConfig.pm:ro
-  #    ports:
-  #      - 80
     
     awe-monitor:
       image: mgrast/awe-monitor
       extra_hosts:
         - "skyport.local:${SKYPORT_DOCKER_GATEWAY}"
+      environment:
+        AUTH_URL: "http://skyport.local:8001/auth/cgi-bin"
+        APPLICATION_NAME: AWE
+        APPLICATION_URL: "http://skyport.local:8001/awe/monitor/"
+        APPLICATION_SECRET: "abXYffLyDabuyxXN8vstbsaMdNwpMKfk" 
+      command: ['httpd', '-DFOREGROUND','-C' , 'Define servername http://skyport.local:8001/awe/monitor']
       depends_on:
         - awe-server
       volumes:
-        - ${CONFIGDIR}/awe-monitor/config.js:/usr/share/nginx/html/js/config.js
+        - ${CONFIGDIR}/awe-monitor/config.js:/usr/local/apache2/htdocs/js/config.js
       ports:
         - 80
+        
         
     # api for submission of demo workflow (part of demo-app)
     demo-app-api:
@@ -186,8 +185,9 @@ services:
           - shock
           - shock-browser
           - adminer
-          - auth
+          - auth-server
           - awe-server
+          - awe-monitor
           - demo-app-api
           - demo-app-web
         ports:
@@ -217,15 +217,17 @@ services:
 
    # the MySQL server is a component of the auth server
    #
-    db:
+    auth-mysql:
         image: mysql:5.7
+        command: ['--explicit_defaults_for_timestamp', '--init-file', '/tmp/dbsetup.demo.mysql']
         environment:
             MYSQL_ROOT_PASSWORD: secret
             MYSQL_DATABASE: DemoAppUsers
             MYSQL_USER: authService
             MYSQL_PASSWORD: authServicePassword
         volumes:
-          - /var/lib/mysql
+          - auth-mysql:/var/lib/mysql
+          - ${CONFIGDIR}/authServer/dbsetup.demo.mysql:/tmp/dbsetup.demo.mysql
           #- ${AUTHDB}:/var/lib/mysql
 
    # we use a volume (see below) to make data persistent between runs
@@ -241,3 +243,9 @@ services:
         # to make the AWE jobs persistent between runs uncomment the lines below
         #volumes:
         #  - ${SHOCKDIR}/db:/data/db
+
+
+volumes:
+  auth-mysql:
+    
+    
