@@ -6,8 +6,8 @@ Requires [Docker](https://docker.com) or [Singularity](https://sylabs.io/docs/).
 
 Structure of the class
 
-* [Introduction](https://github.com/MG-RAST/Skyport2-Workflows-Tutorial/00_intro.pdf)
+* [Introduction](https://github.com/MG-RAST/Skyport2-Workflows-Tutorial/blob/master/00_intro.pdf)
 * [Install worker on your laptop](https://github.com/MG-RAST/Skyport2-Workflows-Tutorial/blob/master/01-Install.md) (hands on)
 * Introduction into CWL and Docker
 * 2 Workflows examples (hands on)
-* [Results and Outlook](https://github.com/MG-RAST/Skyport2-Workflows-Tutorial/04_outro.pdf)
+* [Results and Outlook](https://github.com/MG-RAST/Skyport2-Workflows-Tutorial/blob/master/04_outro.pdf)
